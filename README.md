@@ -8,17 +8,23 @@ Weather via the command line. Uses the [darksky.net](https://darksky.net) API so
 
 ![Screenshot](screenshot.png)
 
- * [Installation](README.md#installation)
-      * [Binaries](README.md#binaries)
-      * [Via Go](README.md#via-go)
-      * [Via Homebrew](README.md#via-homebrew)
- * [Usage](README.md#usage)
-   * [Examples](README.md#examples)
- * [Running the Server](README.md#running-the-server)
-      * [Usage](README.md#usage-1)
-      * [Running with Docker](README.md#running-with-docker)
- * [Contributing](README.md#contributing)
-      * [Makefile Usage](README.md#makefile-usage)
+**Table of Contents**
+
+<!-- toc -->
+
+- [Installation](#installation)
+    + [Binaries](#binaries)
+    + [Via Go](#via-go)
+    + [Via Homebrew](#via-homebrew)
+- [Usage](#usage)
+  * [Examples](#examples)
+- [Running the Server](#running-the-server)
+    + [Usage](#usage-1)
+    + [Running with Docker](#running-with-docker)
+- [Contributing](#contributing)
+    + [Makefile Usage](#makefile-usage)
+
+<!-- tocstop -->
 
 ## Installation
 

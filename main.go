@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -26,6 +27,7 @@ var (
 	ignoreAlerts bool
 	hideIcon     bool
 	noForecast   bool
+	jsonOut      bool
 	server       string
 	client       bool
 
@@ -70,10 +72,12 @@ func main() {
 	p.FlagSet.BoolVar(&hideIcon, "hide-icon", false, "Hide the weather icons from being output")
 	p.FlagSet.BoolVar(&noForecast, "no-forecast", false, "Hide the forecast for the next 16 hours")
 
+	p.FlagSet.BoolVar(&jsonOut, "json", false, "Prints the raw JSON API response")
+
 	// Set the before function.
 	p.Before = func(ctx context.Context) error {
 		if len(server) < 1 {
-			return errors.New("Please enter a Weather API server uri or leave blank to use the default")
+			return errors.New("please enter a weather API server uri or leave blank to use the default")
 		}
 
 		return nil
@@ -100,7 +104,7 @@ func main() {
 				}
 
 				if geo.Latitude == 0 || geo.Longitude == 0 {
-					printError(errors.New("Latitude and Longitude could not be determined from your IP so the weather will not be accurate\nTry: weather -l <your_zipcode> OR weather -l \"your city, state\""))
+					printError(errors.New("latitude and longitude could not be determined from your IP so the weather will not be accurate\nTry: weather -l <your_zipcode> OR weather -l \"your city, state\""))
 				}
 			}
 		} else {
@@ -112,7 +116,7 @@ func main() {
 		}
 
 		if geo.Latitude == 0 || geo.Longitude == 0 {
-			printError(errors.New("Latitude and Longitude could not be determined so the weather will not be accurate"))
+			printError(errors.New("latitude and longitude could not be determined so the weather will not be accurate"))
 		}
 
 		data := forecast.Request{
@@ -128,6 +132,16 @@ func main() {
 		fc, err := forecast.Get(fmt.Sprintf("%s/forecast", server), data)
 		if err != nil {
 			printError(err)
+		}
+
+		if jsonOut {
+			jsn, err := json.Marshal(&fc)
+			if err != nil {
+				printError(err)
+			}
+
+			fmt.Println(string(jsn))
+			return nil
 		}
 
 		if err := forecast.PrintCurrent(fc, geo, ignoreAlerts, hideIcon); err != nil {
